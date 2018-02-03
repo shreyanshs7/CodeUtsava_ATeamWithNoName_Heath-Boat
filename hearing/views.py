@@ -82,15 +82,18 @@ def HearingCalculate(request):
 
 def chart(request):
 	try:
-		doc_obj = DoctorUser.objects.all()
-		age_list = []
-		percentage_list = []
+		male_obj = DoctorUser.objects.filter(gender="Male")
+		female_obj = DoctorUser.objects.filter(gender="Female")
+		male_list = []
+		female_list = []
 
-		for obj in doc_obj:
-			age_list.append(obj.age)
-			percentage_list.append(int(obj.percentage))
+		for obj in male_obj:
+			male_list.append(int(obj.percentage))
 
-		return render(request,"chart.html", {"age" : age_list , "percentage": percentage_list})	
+		for obj in female_obj:
+			female_list.append(int(obj.percentage))	
+
+		return render(request,"chart.html", {"male" : male_list , "female": female_list})	
 	
 	except Exception as e:
 		print(str(e))
@@ -101,8 +104,36 @@ def chart(request):
 
 		return JsonResponse(data,safe=False)		
 	
-# def MaleChart(request):
-# 	try:
-# 		male_obj = DoctorUser.objects.filter(gender="M")
+def AgeChart(request):
+	try:
+		if request.method == "GET":
+			age_20 = DoctorUser.objects.filter(age__lte=20).count()
+			age_20_30 = DoctorUser.objects.filter(age__range=(20,30)).count()
+			age_30_40 = DoctorUser.objects.filter(age__range=(30,40)).count()
 
-# 		
+			age_list = [age_20,age_20_30,age_30_40]
+
+			data = {
+				"success":True,
+				"age_list" : age_list
+			}
+
+			return JsonResponse(data,safe=False)
+		else:
+			
+			data = {
+				"success" : False,
+				"message" : "Invalid request"
+			}
+
+			return JsonResponse(data,safe=False)	
+
+	except Exception as e:
+		print(str(e))
+
+		data = {
+			"success":False,
+			"message":"An error occured"
+		}
+
+		return JsonResponse(data,safe=False)	

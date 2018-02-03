@@ -10,38 +10,56 @@
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
 
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
 </head>
 <body>
 
-<div class="container">
+<div class="container" id="div1" style="margin-top: 100px;">
+	<h3 class="center">Male Female Disability Chart</h3>
+	<br>
 	<canvas id="myChart" style="height: 100%;">
 		
 	</canvas>
 
 	<br>
 	<div class="center">
-			<a class="waves-effect waves-light btn  light-blue darken-1">Male</a>&nbsp;&nbsp;
-			<a class="waves-effect waves-light btn green lighten-1">Female</a>
+			<a class="waves-effect waves-light btn  light-blue darken-1" onclick="age()">Age Chart</a>&nbsp;&nbsp;
+			
 	</div>
 
 </div>
 
+<div class="container" id="div2" style="margin-top: 100px;">
+	<h3 class="center">Age Disability Chart</h3>
+	<br>
+
+	<canvas id="ageChart" style="height: 100%;">
+		
+	</canvas>
+	<br>
+	<div class="center">
+		<a class="waves-effect waves-light btn green lighten-1" onclick="back()">Back</a>
+	</div>
+	
+</div>
+
 <script>
+$(document).ready(function(){
+	$("#div1").show();
+	$("#div2").hide();
+});
+
 var ctx = document.getElementById("myChart").getContext('2d');
 var myChart = new Chart(ctx, {
-    type: 'bar',
+    type: 'line',
     data: {
-        labels: {{ age }},
         datasets: [{
-            label: 'Percentage of Disability',
-            data: {{ percentage }},
+            label: 'male',
+            data: {{ male }},
             backgroundColor: [
                 'rgba(255, 99, 132, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(255, 206, 86, 0.2)',
-                'rgba(75, 192, 192, 0.2)',
-                'rgba(153, 102, 255, 0.2)',
-                'rgba(255, 159, 64, 0.2)'
+                
             ],
             borderColor: [
                 'rgba(255,99,132,1)',
@@ -52,7 +70,22 @@ var myChart = new Chart(ctx, {
                 'rgba(255, 159, 64, 1)'
             ],
             borderWidth: 1
-        }]
+        },
+
+        {
+            label: 'female',
+            data: {{ female }},
+            backgroundColor: [
+                
+                'rgba(255, 206, 86, 0.2)',
+            ],
+            borderColor: [
+                'rgba(75, 192, 192, 1)',
+               
+            ],
+            "lineTension":0.1
+        }
+        ]
     },
     options: {
         scales: {
@@ -64,7 +97,60 @@ var myChart = new Chart(ctx, {
         }
     }
 });
+
+function back(){
+	$("#div2").hide()
+	$("#div1").show()
+}
+
+function age(){
+	$.ajax({
+	url : "/hearing/age",
+	method : "GET",
+	success : function(data){
+		if (data.success == true) {
+			$("#div1").hide()
+			$("#div2").show()
+
+			var ctx = document.getElementById("ageChart").getContext('2d');
+	var myChart = new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+        labels: ["20","20-30","30-40"],
+        datasets: [{
+            label: 'Age',
+            data: data.age_list,
+            backgroundColor: [
+                "rgb(255, 99, 132)",
+                "rgb(54, 162, 235)",
+                "rgb(255, 205, 86)"
+                
+            ],
+            borderColor: [
+                'rgba(255,99,132,1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+               
+            ],
+            borderWidth: 1
+        }]
+    },
+    // options: {
+    //     cutoutPercentage : 50,
+    // }
+});
+		}
+	},
+	error : function(){
+
+	}
+
+});
+}
+
+
 </script>
+
 
 
 
