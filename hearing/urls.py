@@ -4,7 +4,7 @@ from .views import *
 
 urlpatterns = [
 	url(r'^$', chart),
-	url(r'^calculate$', HearingCalculate),
+	url(r'^calculate/$', HearingCalculate),
 	url(r'^chart/$', index),
 	url(r'^age/$', AgeChart),
     

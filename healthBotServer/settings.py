@@ -25,12 +25,15 @@ SECRET_KEY = 'zei-s*=%t+21nh%f(l#tprsku@ack$la5l&*v_jb2ldgk3b@!%'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["172.16.20.214"]
+ALLOWED_HOSTS = ["*"]
 
 
 # Application definition
 
 INSTALLED_APPS = [
+    'material.theme.deeppurple',
+    'material',
+    'material.admin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
