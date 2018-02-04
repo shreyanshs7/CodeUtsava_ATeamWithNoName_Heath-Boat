@@ -3,8 +3,9 @@ from django.contrib import admin
 from .views import *
 
 urlpatterns = [
-	url(r'^$', HearingCalculate),
-	url(r'^chart/$', chart),
+	url(r'^$', chart),
+	url(r'^calculate$', HearingCalculate),
+	url(r'^chart/$', index),
 	url(r'^age/$', AgeChart),
     
     

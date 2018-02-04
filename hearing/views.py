@@ -9,6 +9,10 @@ from django.views.decorators.csrf import csrf_exempt
 
 
 # Create your views here.
+def index(request):
+	return render(request,"chart.html")
+
+
 @csrf_exempt
 def HearingCalculate(request):
 	try :
@@ -93,7 +97,7 @@ def chart(request):
 		for obj in female_obj:
 			female_list.append(int(obj.percentage))	
 
-		return render(request,"chart.html", {"male" : male_list , "female": female_list})	
+		return render(request,"index.html", {"male" : male_list , "female": female_list})	
 	
 	except Exception as e:
 		print(str(e))

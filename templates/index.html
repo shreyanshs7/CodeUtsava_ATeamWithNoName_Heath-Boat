@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+
+  <!-- Compiled and minified JavaScript -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+  <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
+
+</head>
+<body style="font-family: 'Raleway', sans-serif;">
+
+  <nav class="light-blue darken-4">
+    <div class="nav-wrapper">
+      <a href="#" class="brand-logo" style="margin-left: 50px;"><b>HEALTH-BOAT</b></a>
+      <ul id="nav-mobile" class="right hide-on-med-and-down" style="margin-right: 20px;">
+        <li><a href=""><b>About</b></a></li>
+        <li><a href=""><b>Charts</b></a></li>
+      </ul>
+    </div>
+  </nav>
+<br><br>
+<h3 class="center">Charts</h3>
+<hr width="600">
+<div class="row">
+  	<div class="col s6">
+  		<div class="card hoverable">
+  			<div class="card-content">
+  				<span class="card-title"><b>Age wise disability</b></span>
+
+			  		<canvas id="ageChart" style="height: 100%;">
+					
+					</canvas>
+
+  			</div>
+ 		 </div>
+  				
+  	</div>
+  	<div class="col s6">
+  		<div class="card hoverable">
+  			<div class="card-content">
+  				<span class="card-title"><b>Male Female disability</b></span>
+
+			  		<canvas id="myChart" style="height: 100%;">
+					
+					</canvas>
+
+  			</div>
+ 		 </div>
+  				
+  	</div>
+ </div>
+<br>
+ <div class="container">
+ 	<h3 class="center">About</h3>
+ 	<hr width="500">
+ 	And whereas the above eight sub-committees were set up by the Department of Empowerment of Persons with
+Disabilities vide orders dated the 21st September, 2016, the 3rd October, 2016 and the 23rd January, 2017.
+And whereas the said sub-committees, after detailed deliberations, submitted their reports and these reports were
+examined by the expert committee headed by Secretary, Department of Empowerment of Persons with Disabilities;
+And whereas the expert committee noted that the Ministry of Health and Family Welfare is the final authority to
+recommend guidelines on evaluation and procedure for certification of specified disabilities and accordingly the
+consolidated reports of all the eight sub-committees were referred to the Ministry of Health and Family Welfare for
+finalisation;
+And whereas a meeting was held on the 11th April, 2017 under the chairmanship of Secretary, Ministry of
+Health and Family Welfare to consider the reports submitted by the eight sub-committees and subsequently Ministry of
+Health and Family Welfare conveyed their recommendations on 9th June 2017.
+The said guidelines for the purpose of assessing disabilities at Annexure II shall supersede the guidelines for
+evaluation of various disabilities and procedure for certification vide Government of India, Ministry of Social Justice and
+Empowerment notification number 16-18/97-NI I. dated the 1st June 2001 and the guidelines for evaluation and
+assessment of mental illness and procedure of certification vide Government of India, Ministry of Social Justice and
+Empowerment notification number 16-18/97-NI dated the 18th February 2002, except as respects things done or omitted
+to be done before such supersession. 
+ </div>
+
+  
+
+  <script type="text/javascript">
+
+  	$(document).ready(function(){
+  		ageChart();
+       
+  	});
+
+  	function ageChart(){
+
+  	var ctx = document.getElementById("myChart").getContext('2d');
+	var myChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+        datasets: [{
+            label: 'male',
+            data: {{ male }},
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                
+            ],
+            borderColor: [
+                'rgba(255,99,132,1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)'
+            ],
+            borderWidth: 1
+        },
+
+        {
+            label: 'female',
+            data: {{ female }},
+            backgroundColor: [
+                
+                'rgba(255, 206, 86, 0.2)',
+            ],
+            borderColor: [
+                'rgba(75, 192, 192, 1)',
+               
+            ],
+            "lineTension":0.1
+        }
+        ]
+    },
+    options: {
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero:true
+                }
+            }]
+        }
+    }
+});
+	
+
+	$.ajax({
+	url : "/hearing/age",
+	method : "GET",
+	success : function(data){
+		if (data.success == true) {
+
+			var ctx = document.getElementById("ageChart").getContext('2d');
+	var myChart = new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+        labels: ["20","20-30","30-40"],
+        datasets: [{
+            label: 'Age',
+            data: data.age_list,
+            backgroundColor: [
+                "rgb(255, 99, 132)",
+                "rgb(54, 162, 235)",
+                "rgb(255, 205, 86)"
+                
+            ],
+            borderColor: [
+                'rgba(255,99,132,1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+               
+            ],
+            borderWidth: 1
+        }]
+    },
+    // options: {
+    //     cutoutPercentage : 50,
+    // }
+});
+		}
+	},
+	error : function(){
+
+	}
+
+});
+
+
+  	}
+
+  
+  </script>
+       
+</body>
+</html>
